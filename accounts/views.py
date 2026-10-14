@@ -18,6 +18,10 @@ from accounts.models import User, Perfil
 from accounts.services import perfil_pelo_dominio, DominioInvalido
 from django.middleware.csrf import get_token
 
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
+from accounts.permissions import IsAdmin
+
 
 class CadastroView(APIView):
     permission_classes = [AllowAny]
@@ -202,6 +206,7 @@ class ConfirmarEmailView(APIView):
         )
 
 
+@method_decorator(csrf_protect, name="dispatch")
 class LoginView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []
@@ -300,3 +305,12 @@ class CsrfView(APIView):
     def get(self, request):
         token = get_token(request)
         return Response({"csrfToken": token})
+    
+
+class RotaAdministrativaView(APIView):
+    permission_classes = [IsAdmin]
+
+    def get(self, request):
+        return Response({"mensagem": "Acesso administrativo autorizado."})
+    
+    

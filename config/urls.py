@@ -8,6 +8,7 @@ from accounts.views import (
     LogoutView,
     MeView,
     CsrfView,
+    RotaAdministrativaView,
 )
 
 
@@ -19,4 +20,5 @@ urlpatterns = [
     path("api/auth/logout", LogoutView.as_view(), name="logout"),
     path("api/auth/me", MeView.as_view(), name="me"),
     path("api/auth/csrf", CsrfView.as_view(), name="csrf"),
+    path("api/admin/teste-acesso", RotaAdministrativaView.as_view(), name="teste-acesso-admin"),
 ]
