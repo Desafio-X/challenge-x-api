@@ -2,7 +2,7 @@
 
 Convenções obrigatórias para o backend da Plataforma Desafio X. Vale para todo mundo, desde o primeiro commit. Em caso de dúvida que este guia não resolve, decide-se no PR e o guia é atualizado no mesmo PR.
 
-**Stack:** Python 3.12, Django 5, Django REST Framework, PostgreSQL, uv.
+**Stack:** Python 3.12, Django 6.1, Django REST Framework, uv. Banco: SQLite por enquanto; a troca para PostgreSQL fica para quando houver ambiente de homologação.
 
 ---
 
@@ -53,10 +53,9 @@ name = "desafiox-backend"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
-    "django>=5.1",
+    "django>=6.1",
     "djangorestframework>=3.15",
     "django-environ>=0.11",
-    "psycopg[binary]>=3.2",
 ]
 
 [dependency-groups]
@@ -90,7 +89,7 @@ environ.Env.read_env(BASE_DIR / ".env")
 SECRET_KEY = env("DJANGO_SECRET_KEY")          # sem default: obrigatório
 DEBUG = env("DJANGO_DEBUG")
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
-DATABASES = {"default": env.db("DATABASE_URL")}
+DATABASES = {"default": env.db("DATABASE_URL", default=f"sqlite:///{BASE_DIR}/db.sqlite3")}
 
 LANGUAGE_CODE = "pt-br"
 TIME_ZONE = "America/Araguaina"
@@ -106,7 +105,7 @@ AUTH_USER_MODEL = "accounts.User"
 DJANGO_SECRET_KEY=troque-este-valor
 DJANGO_DEBUG=True
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-DATABASE_URL=postgres://desafiox:desafiox@localhost:5432/desafiox
+DATABASE_URL=sqlite:///db.sqlite3
 EMAIL_HOST=
 EMAIL_HOST_USER=
 EMAIL_HOST_PASSWORD=
@@ -486,7 +485,7 @@ Sequência do dia 1, feita por uma pessoa e revisada pelas outras no mesmo dia:
 ```bash
 uv init desafiox-backend && cd desafiox-backend
 uv python pin 3.12
-uv add django djangorestframework django-environ "psycopg[binary]"
+uv add django djangorestframework django-environ
 uv add --dev ruff pytest pytest-django factory-boy pre-commit
 
 uv run django-admin startproject config .
