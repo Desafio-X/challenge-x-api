@@ -1,0 +1,35 @@
+[project]
+name = "desafiox-backend"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=6.1",
+    "djangorestframework>=3.15",
+    "django-environ>=0.11",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.6",
+    "pytest>=8.3",
+    "pytest-django>=4.9",
+    "factory-boy>=3.3",
+    "pre-commit>=3.8",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",    # Erros de estilo
+    "F",    # Erros detectáveis pelo Pyflakes
+    "I",    # Organização dos imports
+    "UP",   # Modernização da sintaxe Python
+    "B",    # Possíveis bugs
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
